@@ -4,18 +4,16 @@ const path = require('node:path');
 const source = path.join(__dirname, 'styles');
 const bundle = path.join(__dirname, 'project-dist', 'bundle.css');
 
-дайте пару дней доделать 5 и 6  задание плиз ))
-// const writableStream = fs.createWriteStream(bundle, 'utf-8');
+const writableStream = fs.createWriteStream(bundle, 'utf-8');
+fs.readdir(source, { withFileTypes: true }, (err, files) => {
+  if (err) console.log(err.message);
+  files.forEach((file) => {
+    if (!file.isFile()) return;
+    const filePath = path.join(source, file.name);
+    const fileExtension = path.extname(filePath).slice(1);
 
-// fs.readdir(source, { withFileTypes: true }, (err, files) => {
-//   if (err) throw err;
-//   for (const file of files) {
-//     if (file.isFile() && path.extname(file.name) === '.css') {
-//       const sourcePath = path.join(source, file.name);
-//       const targetPath = path.join(__dirname, 'project-dist', file.name);
-//       fs.copyFile(sourcePath, targetPath, (err) => {
-//         if (err) throw err;
-//       });
-//     }
-//   }
-// });
+    if (fileExtension !== 'css') return;
+    const readableStream = fs.createReadStream(filePath, 'utf-8');
+    readableStream.pipe(writableStream);
+  });
+});
