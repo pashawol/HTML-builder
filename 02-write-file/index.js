@@ -5,7 +5,7 @@ const { stdin, stdout } = process;
 const file = path.resolve(__dirname, 'text.txt');
 const writableStream = fs.createWriteStream(file, 'utf-8');
 
-stdin.write('Hello, Enter your message!\n');
+stdout.write('Hello, Enter your message!\n');
 stdin.on('data', (chunk) => {
   if (chunk.toString().toLocaleLowerCase().includes('exit')) process.exit();
   writableStream.write(chunk, 'utf-8');
